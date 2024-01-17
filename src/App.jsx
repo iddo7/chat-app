@@ -1,8 +1,23 @@
 import { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.scss'
+import MessageForm from './Components/MessageForm/MessageForm'
 
 export default function App() {
+  const [messages, setMessages] = useState([])
+
+  function createMessage(message) {
+    setMessages(currentMessages => {
+      return [
+        ...currentMessages,
+        {
+          id: crypto.randomUUID(),
+          author: message.author,
+          content: message.content,
+        }
+      ]
+    })
+  }
 
   return (
     <>
@@ -19,18 +34,6 @@ export default function App() {
         </section>
 
         <section className='messages-section d-flex flex-column'>
-
-          <div className='message-group d-flex flex-column'>
-            <span className='message-author'>Julien Fortin</span>
-
-            <div className='message'>
-              <p>Sincèrement, ma passion c'est le yapping.</p>
-            </div>
-
-            <div className='message'>
-              <p>Sincèrement, ma passion c'est le yapping.</p>
-            </div>
-          </div>
 
           <div className='message-group d-flex flex-column'>
             <span className='message-author'>Étienne Bourgeois Frappier</span>
@@ -53,12 +56,22 @@ export default function App() {
             </div>
           </div>
 
+          {messages.map(message => {
+            return (
+              <div key={message.id} className='message-group d-flex flex-column'>
+                <span className='message-author'>{message.author}</span>
+    
+                <div className='message'>
+                  <p>{message.content}</p>
+                </div>
+              </div>
+            )
+          })}
+
         </section>
 
         <section className='message-form-section fixed-bottom'>
-          <form action=''>
-            <input type='text' id='new-message-input' className='form-control bg-dark text-white' />
-          </form>
+          <MessageForm onSubmit={createMessage} />
         </section>
 
       </div>
