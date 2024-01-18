@@ -1,23 +1,53 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.scss'
 import MessageForm from './Components/MessageForm/MessageForm'
+import MessageGroup from './Components/MessageGroup'
 
 export default function App() {
   const [messages, setMessages] = useState([])
+  const [messageGroups, setMessageGroups] = useState([])
+
+  useEffect(() => {
+    setMessageGroups(getMessageGroups())
+  }, [messages])
+
+
+
+  function getMessageGroups() {
+    let newMessageGroups = []
+    let lastMessage = null;
+    
+    if (messages.length === 0) return newMessageGroups
+
+    messages.forEach(message => {
+
+      if (lastMessage != null && message.author === lastMessage.author) {
+        newMessageGroups[newMessageGroups.length -1].messages.push(message)
+      }
+      else {
+        let newMessageGroup = {
+          id: crypto.randomUUID(),
+          author: message.author,
+          messages: [message]
+        }
+        newMessageGroups.push(newMessageGroup)
+      }
+
+      lastMessage = message
+    })
+    
+    return newMessageGroups
+  }
+  
 
   function createMessage(message) {
     setMessages(currentMessages => {
-      return [
-        ...currentMessages,
-        {
-          id: crypto.randomUUID(),
-          author: message.author,
-          content: message.content,
-        }
-      ]
+      return [...currentMessages, message]
     })
   }
+
+
 
   return (
     <>
@@ -38,10 +68,6 @@ export default function App() {
           <div className='message-group d-flex flex-column'>
             <span className='message-author'>Étienne Bourgeois Frappier</span>
 
-            <div className='message'>
-              <p>Sincèrement, ma passion c'est le yapping.</p>
-            </div>
-
             <div className='message message-core'>
               <p>Ceci est un message important !!</p>
             </div>
@@ -56,15 +82,12 @@ export default function App() {
             </div>
           </div>
 
-          {messages.map(message => {
+
+
+
+          {messageGroups.map(messageGroup => {
             return (
-              <div key={message.id} className='message-group d-flex flex-column'>
-                <span className='message-author'>{message.author}</span>
-    
-                <div className='message'>
-                  <p>{message.content}</p>
-                </div>
-              </div>
+              <MessageGroup {...messageGroup} key={messageGroup.id} />
             )
           })}
 
