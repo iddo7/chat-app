@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.scss'
 import MessageForm from './Components/MessageForm/MessageForm'
@@ -8,51 +8,46 @@ export default function App() {
   const [messages, setMessages] = useState([])
   const [messageGroups, setMessageGroups] = useState([])
 
-  console.log(messageGroups)
+  useEffect(() => {
+    setMessageGroups(getMessageGroups())
+  }, [messages])
+
+
+
+  function getMessageGroups() {
+    let newMessageGroups = []
+    let lastMessage = null;
+    
+    if (messages.length === 0) return newMessageGroups
+
+    messages.forEach(message => {
+
+      if (lastMessage != null && message.author === lastMessage.author) {
+        newMessageGroups[newMessageGroups.length -1].messages.push(message)
+      }
+      else {
+        let newMessageGroup = {
+          id: crypto.randomUUID(),
+          author: message.author,
+          messages: [message]
+        }
+        newMessageGroups.push(newMessageGroup)
+      }
+
+      lastMessage = message
+    })
+    
+    return newMessageGroups
+  }
   
-/*
+
   function createMessage(message) {
-    const message = {
-      id: crypto.randomUUID(),
-      author: message.author,
-      content: message.content,
-    }
     setMessages(currentMessages => {
       return [...currentMessages, message]
     })
-  }*/
-
-  function createMessageAlt(message) { 
-    if (messageGroups.length === 0) {
-      setMessageGroups((currentMessageGroups) => {
-        return [
-          {
-            id: crypto.randomUUID(),
-            author: message.author,
-            messages: [message]
-          }
-        ]
-      })
-      return
-    }
-
-    setMessageGroups((currentMessageGroups) => {
-      return currentMessageGroups.map(messageGroup => {
-
-        if (messageGroup.author === message.author) { 
-          // If new message's author is the same as a group's then update it's messages to add the new one
-          return {...messageGroup, messages: [...messageGroup.messages, message] }
-        }
-        else {
-          return {
-            id: crypto.randomUUID(),
-            author: message.author,
-            messages: [message]
-          }
-        }
-
-    })})
   }
+
+
 
   return (
     <>
@@ -99,7 +94,7 @@ export default function App() {
         </section>
 
         <section className='message-form-section fixed-bottom'>
-          <MessageForm onSubmit={createMessageAlt} />
+          <MessageForm onSubmit={createMessage} />
         </section>
 
       </div>
