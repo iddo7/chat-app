@@ -65,31 +65,13 @@ export default function App() {
 
         <section className='messages-section d-flex flex-column'>
 
-          <div className='message-group d-flex flex-column'>
-            <span className='message-author'>Étienne Bourgeois Frappier</span>
-
-            <div className='message message-core'>
-              <p>Ceci est un message important !!</p>
-            </div>
-          </div>
-
-          <div className='message-group message-group-own ms-auto d-flex flex-column'>
-            {/* <span className='message-author'>Étienne Bourgeois Frappier</span> */}
-            
-
-            <div className='message'>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </div>
-          </div>
-
-
-
-
-          {messageGroups.map(messageGroup => {
-            return (
-              <MessageGroup {...messageGroup} key={messageGroup.id} />
-            )
-          })}
+          {
+            messageGroups.map(messageGroup => {
+              return (
+                <MessageGroup {...messageGroup} key={messageGroup.id} />
+              )
+            })
+          }
 
         </section>
 

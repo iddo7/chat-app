@@ -23,8 +23,8 @@ export default function MessageForm({ onSubmit }) {
             id: crypto.randomUUID(),
             author: 'own', // change later
             content: e.target.value,
-          })
-        }
+            isCore: false,
+          })}
           type='text' 
           id='new-message-input' 
           className='form-control bg-dark text-white' 

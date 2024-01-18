@@ -1,9 +1,9 @@
 
-export default function Message({ content }) {
+export default function Message({ content, isCore }) {
 
     return (
         <>
-            <div className='message'>
+            <div className={`message ${isCore ? 'message-core' : ''}`}>
                 <p>{content}</p>
             </div>
         </>

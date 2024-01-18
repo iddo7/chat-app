@@ -89,7 +89,11 @@ p {
     }
 
     .message-group-own {
-        // text-align: right;
+        margin-left: auto;
+
+        .message {
+            margin-left: auto;
+        }
     }
 
 }
