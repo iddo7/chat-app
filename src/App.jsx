@@ -1,15 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.scss'
 import MessageForm from './Components/MessageForm/MessageForm'
-import MessageGroup from './Components/MessageGroup'
+import MessageGroup from './Components/MessageGroup/MessageGroup'
 
 export default function App() {
   const [messages, setMessages] = useState([])
   const [messageGroups, setMessageGroups] = useState([])
+  const scrollToBottom = useRef(null)
 
   useEffect(() => {
     setMessageGroups(getMessageGroups())
+
+
+    if (scrollToBottom.current) {
+      scrollToBottom.current.scrollIntoView({ behaviour: 'smooth' })
+
+    }
   }, [messages])
 
 
@@ -45,6 +52,7 @@ export default function App() {
     setMessages(currentMessages => {
       return [...currentMessages, message]
     })
+
   }
 
 
@@ -72,6 +80,8 @@ export default function App() {
               )
             })
           }
+
+          <div class='scroll-to-bottom' ref={scrollToBottom}></div>
 
         </section>
 

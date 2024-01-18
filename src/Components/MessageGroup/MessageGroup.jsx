@@ -1,4 +1,4 @@
-import Message from "./Message/Message"
+import Message from "../Message/Message"
 
 export default function MessageGroup({ id, author, messages }) {
     let isOwn = author == 'own'
