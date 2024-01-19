@@ -1,0 +1,20 @@
+@import '../../App.scss';
+
+$background-opactiy: 0.1;
+$placeholder-opactiy: 0.25;
+
+
+
+input[type="text"] {
+    padding: $message-padding;
+    border-radius: $message-radius * 2;
+    font-size: $message-font-size;
+    background-color: rgba(255, 255, 255, $background-opactiy) !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+
+::placeholder {
+    color: rgba(255, 255, 255, $placeholder-opactiy) !important;
+}

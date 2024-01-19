@@ -1,4 +1,5 @@
 import { useState } from "react"
+import './MessageForm.scss'
 
 export default function MessageForm({ onSubmit }) {
     const defaultNewMessage = {
@@ -25,9 +26,10 @@ export default function MessageForm({ onSubmit }) {
             content: e.target.value,
             isCore: false,
           })}
+          placeholder="Message"
           type='text' 
           id='new-message-input' 
-          className='form-control bg-dark text-white' 
+          className='form-control text-white' 
         />
       </form>
     )

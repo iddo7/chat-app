@@ -1,22 +1,6 @@
 
 
-
-/* --- VARIABLES --- */
-
-$message-author-size: 0.6rem;
-/* - Messages - */
-$message-font-size: 0.75rem;
-$message-padding: 1rem;
-$message-max-width: 90%;
-$message-radius: 1.2rem;
-$message-background-opacity: 0.15;
-$message-color: rgba(255, 255, 255, $message-background-opacity);
-$message-spacing: 0.3rem;
-$message-group-spacing: 2.5 * $message-spacing;
-
-/* Core */
-$core-message-background-opacity: 1;
-$core-message-color: rgba(75, 89, 167, $core-message-background-opacity);
+@import './variables.scss';
 
 
 
@@ -105,14 +89,3 @@ p {
 
 
 
-/* --- MESSAGE FORM SECTION --- */
-
-.message-form-section {
-
-    input[type="text"] {
-        padding: $message-padding;
-        border-radius: $message-radius * 2;
-        font-size: $message-font-size;
-    }
-
-}
