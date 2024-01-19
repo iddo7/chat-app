@@ -22,6 +22,7 @@ export default function MessageForm({ onSubmit }) {
           value={newMessage.content}
           onChange={e => setNewMessage({
             id: crypto.randomUUID(),
+            createdAt: new Date(),
             author: 'own', // change later
             content: e.target.value,
             isCore: false,
