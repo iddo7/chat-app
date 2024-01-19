@@ -81,7 +81,7 @@ export default function App() {
             })
           }
 
-          <div class='scroll-to-bottom' ref={scrollToBottom}></div>
+          <div className='scroll-to-bottom' ref={scrollToBottom}></div>
 
         </section>
 
