@@ -3,8 +3,10 @@ import './MessageForm.scss'
 
 export default function MessageForm({ onSubmit }) {
     const defaultNewMessage = {
+        roomId: null, //change later
         author: 'own', // change later
         content: '',
+        isCore: false,
     }
     const [newMessage, setNewMessage] = useState(defaultNewMessage)
 
@@ -23,6 +25,7 @@ export default function MessageForm({ onSubmit }) {
           onChange={e => setNewMessage({
             id: crypto.randomUUID(),
             createdAt: new Date(),
+            roomId: null, //change later
             author: 'own', // change later
             content: e.target.value,
             isCore: false,
