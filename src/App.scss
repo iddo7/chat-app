@@ -32,6 +32,11 @@ p {
     font-size: $message-font-size;
 }
 
+a {
+    text-decoration: none;
+    color: $app-fonts-color;
+}
+
 .icon-core {
     color: rgb(89, 111, 233);
 }
