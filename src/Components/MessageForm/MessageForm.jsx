@@ -1,9 +1,9 @@
 import { useState } from "react"
 import './MessageForm.scss'
 
-export default function MessageForm({ onSubmit }) {
+export default function MessageForm({ onSubmit, roomId }) {
     const defaultNewMessage = {
-        roomId: null, //change later
+        roomId: roomId, //change later
         author: 'own', // change later
         content: '',
         isCore: false,
@@ -13,6 +13,8 @@ export default function MessageForm({ onSubmit }) {
     function handleSubmit(e) {
       e.preventDefault()
       if (newMessage.content === '') return
+
+      console.log(newMessage)
   
       onSubmit(newMessage)
       setNewMessage(defaultNewMessage)
@@ -25,7 +27,7 @@ export default function MessageForm({ onSubmit }) {
           onChange={e => setNewMessage({
             id: crypto.randomUUID(),
             createdAt: new Date(),
-            roomId: null, //change later
+            roomId: roomId, //change later
             author: 'own', // change later
             content: e.target.value,
             isCore: false,
