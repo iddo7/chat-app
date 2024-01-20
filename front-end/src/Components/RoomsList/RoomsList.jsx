@@ -14,7 +14,6 @@ export default function RoomsList() {
             fetch('http://localhost:8081/rooms')
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                 setRooms(data)
             })
             .catch(error => {
