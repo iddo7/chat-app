@@ -118,8 +118,8 @@ INSERT INTO `messages` (`id`, `createdAt`, `roomId`, `authorId`, `content`, `isC
 
 -- Insert into rooms
 INSERT INTO `rooms` (`id`, `createdAt`, `name`, `imageUrl`) VALUES
-('your_room_id_1', '2024-01-20', 'Room 1', 'room1_image_url'),
-('your_room_id_2', '2024-01-20', 'Room 2', 'room2_image_url');
+('your_room_id_3', '2024-01-20', 'Yappertown', 'https://t4.ftcdn.net/jpg/02/01/10/87/360_F_201108775_UMAoFXBAsSKNcr53Ip5CTSy52Ajuk1E4.jpg'),
+('your_room_id_4', '2024-01-20', 'jeans koule', 'https://t4.ftcdn.net/jpg/02/01/10/87/360_F_201108775_UMAoFXBAsSKNcr53Ip5CTSy52Ajuk1E4.jpg');
 
 -- Insert into room_user
 INSERT INTO `room_user` (`roomId`, `userId`, `createdAt`) VALUES
