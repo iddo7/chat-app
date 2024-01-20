@@ -13,7 +13,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<RoomsList />} />
-          <Route path='/a' element={<Room />} />
+          <Route path='room/:id' element={<Room />} />
         </Routes>
       </BrowserRouter>
     </>

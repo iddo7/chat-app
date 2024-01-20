@@ -5,7 +5,37 @@ import { faCircle as emptyCircle } from '@fortawesome/free-regular-svg-icons'
 import { useState } from 'react'
 
 export default function RoomsList() {
-    const [rooms, setRooms] = useState([])
+    const [rooms, setRooms] = useState([
+        {
+            id: 1,
+            name: 'Yappertown',
+            imageUrl: 'https://t4.ftcdn.net/jpg/02/01/10/87/360_F_201108775_UMAoFXBAsSKNcr53Ip5CTSy52Ajuk1E4.jpg', // Add the URL for the room image here
+            usersId: [
+                'JeTibault',
+                'JuFortin',
+                'own',
+            ]
+        },
+        {
+            id: 2,
+            name: 'jeans koule',
+            imageUrl: 'https://t4.ftcdn.net/jpg/02/01/10/87/360_F_201108775_UMAoFXBAsSKNcr53Ip5CTSy52Ajuk1E4.jpg', // Add the URL for the room image here
+            usersId: [
+                'JeTibault',
+                'JuFortin',
+                'own',
+            ]
+        },
+        {
+            id: 3,
+            name: 'Jérémy Thibault',
+            imageUrl: 'https://t4.ftcdn.net/jpg/02/01/10/87/360_F_201108775_UMAoFXBAsSKNcr53Ip5CTSy52Ajuk1E4.jpg', // Add the URL for the room image here
+            usersId: [
+                'JeTibault',
+                'own',
+            ]
+        },
+    ])
 
     return (
         <>
@@ -13,33 +43,25 @@ export default function RoomsList() {
           
                 <section className='rooms-list-section'>
                     <div className="d-flex flex-column">
-                
-                    <Link to='/a'>
-                        <div className="room-preview d-flex flex-row align-items-center">            
-                        <img className='room-img' src='https://t4.ftcdn.net/jpg/02/01/10/87/360_F_201108775_UMAoFXBAsSKNcr53Ip5CTSy52Ajuk1E4.jpg' />
-                        <div className="d-flex flex-column">
-                            <h2>Yappertown</h2>
-                        </div>
-                            <FontAwesomeIcon icon={fullCircle} className='ms-auto icon-core' />
-                        </div>
-                    </Link>
-                
-                
-                    <div className="room-preview d-flex flex-row align-items-center">            
-                        <img className='room-img' src='https://t4.ftcdn.net/jpg/02/01/10/87/360_F_201108775_UMAoFXBAsSKNcr53Ip5CTSy52Ajuk1E4.jpg' />
-                        <div className="d-flex flex-column">
-                        <h2>jeans koule</h2>
-                        </div>
-                        <FontAwesomeIcon icon={fullCircle} className='ms-auto' />
-                    </div>
-                
-                    <div className="room-preview d-flex flex-row align-items-center">            
-                        <img className='room-img' src='https://t4.ftcdn.net/jpg/02/01/10/87/360_F_201108775_UMAoFXBAsSKNcr53Ip5CTSy52Ajuk1E4.jpg' />
-                        <div className="d-flex flex-column">
-                        <h2>Jérémy Thibault</h2>
-                        </div>
-                        <FontAwesomeIcon icon={emptyCircle} className='ms-auto' />
-                    </div>
+
+                        {rooms.map(room => (
+                            <Link 
+                                key={room.id}
+                                to={{
+                                    pathname: `/room/${room.id}`,
+                                    state: {
+                                        room: room
+                                    }
+                                }}
+                                className="room-preview d-flex flex-row align-items-center" 
+                            >            
+                                <img className='room-img' src={room.imageUrl} />
+                                <div className="d-flex flex-column">
+                                    <h2>{room.name}</h2>
+                                </div>
+                                <FontAwesomeIcon icon={room.usersId.length > 0 ? fullCircle : emptyCircle} className={`ms-auto ${false ? 'iconCore' : ''}`} />
+                            </Link>
+                        ))}
                 
                     </div>
                 </section>

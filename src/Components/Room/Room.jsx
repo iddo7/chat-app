@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../../App.scss'
 import MessageForm from '../MessageForm/MessageForm'
 import MessageGroup from '../MessageGroup/MessageGroup'
 
 export default function Room() {
+  const roomId = useParams()
+
   const [messages, setMessages] = useState([])
   const [messageGroups, setMessageGroups] = useState([])
   const scrollToBottom = useRef(null)
@@ -55,8 +58,6 @@ export default function Room() {
 
   }
 
-
-
   return (
     <>
       <div className='container text-white'>
@@ -86,7 +87,7 @@ export default function Room() {
         </section>
 
         <section className='message-form-section fixed-bottom'>
-          <MessageForm onSubmit={createMessage} />
+          <MessageForm onSubmit={createMessage} roomId={roomId} />
         </section>
 
       </div>
