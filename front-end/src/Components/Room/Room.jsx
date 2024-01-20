@@ -6,15 +6,38 @@ import MessageForm from '../MessageForm/MessageForm'
 import MessageGroup from '../MessageGroup/MessageGroup'
 
 export default function Room() {
-  const roomId = useParams()
-
+  const params = useParams()
   const [messages, setMessages] = useState([])
   const [messageGroups, setMessageGroups] = useState([])
   const scrollToBottom = useRef(null)
+  const liveReload = false
+
+  useEffect(() => {
+      // Fetch the rooms from the server
+      const fetchMessages = () => {
+          fetch(`http://localhost:8081/room/${params.id}/messages`)
+          .then(response => response.json())
+          .then(data => {
+            console.log(data)
+              // setMessages(data)
+          })
+          .catch(error => {
+              console.error(error)
+          })
+      }
+
+      fetchMessages()
+
+      if (liveReload) {
+          // Fetch the rooms from the server every 5 seconds
+          const interval = setInterval(fetchRooms, 5000)
+          return () => clearInterval(interval)
+      }
+
+  }, [])
 
   useEffect(() => {
     setMessageGroups(getMessageGroups())
-
 
     if (scrollToBottom.current) {
       scrollToBottom.current.scrollIntoView({ behaviour: 'smooth' })
@@ -87,7 +110,7 @@ export default function Room() {
         </section>
 
         <section className='message-form-section fixed-bottom'>
-          <MessageForm onSubmit={createMessage} roomId={roomId} />
+          <MessageForm onSubmit={createMessage} roomId={params.id} />
         </section>
 
       </div>

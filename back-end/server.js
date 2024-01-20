@@ -45,9 +45,9 @@ app.get('/rooms', (req, res) => {
     });
 });
 
-app.get('/rooms/:roomId/messages', (req, res) => {
+app.get('/room/:roomId/messages', (req, res) => {
     const roomId = req.params.roomId;
-    const query = 'SELECT * FROM messages WHERE room_id = ?';
+    const query = 'SELECT * FROM messages WHERE roomId = ?';
 
     db.query(query, [roomId], (err, result) => {
         if (err) return res.json(err);
