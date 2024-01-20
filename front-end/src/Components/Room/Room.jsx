@@ -10,30 +10,10 @@ export default function Room() {
   const [messages, setMessages] = useState([])
   const [messageGroups, setMessageGroups] = useState([])
   const scrollToBottom = useRef(null)
-  const liveReload = false
 
   useEffect(() => {
       // Fetch the rooms from the server
-      const fetchMessages = () => {
-          fetch(`http://localhost:8081/room/${params.id}/messages`)
-          .then(response => response.json())
-          .then(data => {
-            console.log(data)
-              // setMessages(data)
-          })
-          .catch(error => {
-              console.error(error)
-          })
-      }
-
       fetchMessages()
-
-      if (liveReload) {
-          // Fetch the rooms from the server every 5 seconds
-          const interval = setInterval(fetchRooms, 5000)
-          return () => clearInterval(interval)
-      }
-
   }, [])
 
   useEffect(() => {
@@ -41,11 +21,22 @@ export default function Room() {
 
     if (scrollToBottom.current) {
       scrollToBottom.current.scrollIntoView({ behaviour: 'smooth' })
-
     }
+
+    console.log(getMessageGroups())
   }, [messages])
 
 
+  const fetchMessages = () => {
+    fetch(`http://localhost:8081/room/${params.id}/messages`)
+    .then(response => response.json())
+    .then(data => {
+      setMessages(data)
+    })
+    .catch(error => {
+        console.error(error)
+    })
+  }
 
   function getMessageGroups() {
     let newMessageGroups = []
@@ -75,10 +66,26 @@ export default function Room() {
   
 
   function createMessage(message) {
-    setMessages(currentMessages => {
-      return [...currentMessages, message]
+    fetch(`http://localhost:8081/room/${params.id}/messages-create`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(message)
     })
-
+    .then(response => response.json())
+    .then(data => {
+      fetchMessages()
+      /*
+      setMessages(currentMessages => {
+        return [...currentMessages, data]
+      })
+      */
+    })
+    .catch(error => {
+      console.error(error)
+    })
+    
   }
 
   return (

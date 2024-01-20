@@ -20,6 +20,7 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 const db = mysql.createConnection({
     host: host,
@@ -47,13 +48,27 @@ app.get('/rooms', (req, res) => {
 
 app.get('/room/:roomId/messages', (req, res) => {
     const roomId = req.params.roomId;
-    const query = 'SELECT * FROM messages WHERE roomId = ?';
+    const query = 'SELECT * FROM messages WHERE roomId = ? ORDER BY createdAt';
 
     db.query(query, [roomId], (err, result) => {
         if (err) return res.json(err);
         return res.send(result);
     });
 });
+
+app.post('/room/:roomId/messages-create', (req, res) => {
+    const roomId = req.params.roomId;
+
+    const { id, authorId, content, isCore } = req.body;
+    const query = 'INSERT INTO messages (id, roomId, authorId, content, isCore) VALUES (?, ?, ?, ?, ?)';
+
+    db.query(query, [id, roomId, authorId, content, isCore], (err, result) => {
+        if (err) return res.json(err);
+        return res.send(result);
+    });
+});
+
+
 
 
 

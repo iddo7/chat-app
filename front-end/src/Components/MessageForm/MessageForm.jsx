@@ -4,7 +4,7 @@ import './MessageForm.scss'
 export default function MessageForm({ onSubmit, roomId }) {
     const defaultNewMessage = {
         roomId: roomId, //change later
-        author: 'own', // change later
+        authorId: 'own', // change later
         content: '',
         isCore: false,
     }
@@ -28,7 +28,7 @@ export default function MessageForm({ onSubmit, roomId }) {
             id: crypto.randomUUID(),
             createdAt: new Date(), // change later use database
             roomId: roomId, //change later
-            author: 'own', // change later
+            authorId: 'own', // change later
             content: e.target.value,
             isCore: false,
           })}
