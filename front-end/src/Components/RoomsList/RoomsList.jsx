@@ -5,38 +5,32 @@ import { faCircle as emptyCircle } from '@fortawesome/free-regular-svg-icons'
 import { useEffect, useState } from 'react'
 
 export default function RoomsList() {
-    const [rooms, setRooms] = useState([
-        {
-            id: 1,
-            name: 'Yappertown',
-            imageUrl: 'https://t4.ftcdn.net/jpg/02/01/10/87/360_F_201108775_UMAoFXBAsSKNcr53Ip5CTSy52Ajuk1E4.jpg', // Add the URL for the room image here
-        },
-        {
-            id: 2,
-            name: 'jeans koule',
-            imageUrl: 'https://t4.ftcdn.net/jpg/02/01/10/87/360_F_201108775_UMAoFXBAsSKNcr53Ip5CTSy52Ajuk1E4.jpg', // Add the URL for the room image here
-        },
-        {
-            id: 3,
-            name: 'Jérémy Thibault',
-            imageUrl: 'https://t4.ftcdn.net/jpg/02/01/10/87/360_F_201108775_UMAoFXBAsSKNcr53Ip5CTSy52Ajuk1E4.jpg', // Add the URL for the room image here
-        },
-    ])
+    const [rooms, setRooms] = useState([])
+    const liveReload = false
 
     useEffect(() => {
         // Fetch the rooms from the server
-        fetch('http://localhost:8081/rooms')
-        .then(response => response.json())
-        .then(data => {
-            console.log(data)
-            setRooms(data)
-        })
-        .catch(error => {
-            console.error(error)
-        })
-    }, [])
+        const fetchRooms = () => {
+            fetch('http://localhost:8081/rooms')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setRooms(data)
+            })
+            .catch(error => {
+                console.error(error)
+            })
+        }
 
-    console.log(rooms)
+        fetchRooms()
+
+        if (liveReload) {
+            // Fetch the rooms from the server every 5 seconds
+            const interval = setInterval(fetchRooms, 5000)
+            return () => clearInterval(interval)
+        }
+
+    }, [])
 
     return (
         <>
