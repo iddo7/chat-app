@@ -37,6 +37,9 @@ app.get('/', (req, res) => {
     return res.send('Hello World!');
 });
 
+
+/* Rooms */
+
 app.get('/rooms', (req, res) => {
     const query = 'SELECT * FROM rooms'
 
@@ -45,6 +48,19 @@ app.get('/rooms', (req, res) => {
         return res.send(result);
     });
 });
+
+app.get('/room/:roomId', (req, res) => {
+    const roomId = req.params.roomId;
+    const query = 'SELECT * FROM rooms WHERE id = ?';
+
+    db.query(query, [roomId], (err, result) => {
+        if (err) return res.json(err);
+        return res.send(result);
+    });
+});
+
+
+/* Messages */
 
 app.get('/room/:roomId/messages', (req, res) => {
     const roomId = req.params.roomId;
@@ -56,7 +72,7 @@ app.get('/room/:roomId/messages', (req, res) => {
     });
 });
 
-app.post('/room/:roomId/messages-create', (req, res) => {
+app.post('/room/:roomId/messages/create', (req, res) => {
     const roomId = req.params.roomId;
 
     const { id, authorId, content, isCore } = req.body;

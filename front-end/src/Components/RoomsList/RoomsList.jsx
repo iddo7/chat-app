@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react'
 
 export default function RoomsList() {
     const [rooms, setRooms] = useState([])
-    const liveReload = false
 
     useEffect(() => {
         // Fetch the rooms from the server
@@ -22,13 +21,6 @@ export default function RoomsList() {
         }
 
         fetchRooms()
-
-        if (liveReload) {
-            // Fetch the rooms from the server every 5 seconds
-            const interval = setInterval(fetchRooms, 5000)
-            return () => clearInterval(interval)
-        }
-
     }, [])
 
     return (

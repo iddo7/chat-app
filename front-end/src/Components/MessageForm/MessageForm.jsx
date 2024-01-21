@@ -13,8 +13,6 @@ export default function MessageForm({ onSubmit, roomId }) {
     function handleSubmit(e) {
       e.preventDefault()
       if (newMessage.content === '') return
-
-      console.log(newMessage)
   
       onSubmit(newMessage)
       setNewMessage(defaultNewMessage)

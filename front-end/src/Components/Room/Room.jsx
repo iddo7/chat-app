@@ -12,8 +12,7 @@ export default function Room() {
   const scrollToBottom = useRef(null)
 
   useEffect(() => {
-      // Fetch the rooms from the server
-      fetchMessages()
+    fetchMessages()
   }, [])
 
   useEffect(() => {
@@ -22,10 +21,7 @@ export default function Room() {
     if (scrollToBottom.current) {
       scrollToBottom.current.scrollIntoView({ behaviour: 'smooth' })
     }
-
-    console.log(getMessageGroups())
   }, [messages])
-
 
   const fetchMessages = () => {
     fetch(`http://localhost:8081/room/${params.id}/messages`)
@@ -66,7 +62,7 @@ export default function Room() {
   
 
   function createMessage(message) {
-    fetch(`http://localhost:8081/room/${params.id}/messages-create`, {
+    fetch(`http://localhost:8081/room/${params.id}/messages/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -76,11 +72,6 @@ export default function Room() {
     .then(response => response.json())
     .then(data => {
       fetchMessages()
-      /*
-      setMessages(currentMessages => {
-        return [...currentMessages, data]
-      })
-      */
     })
     .catch(error => {
       console.error(error)
@@ -92,7 +83,7 @@ export default function Room() {
     <>
       <div className='container text-white'>
 
-        <section className='header-section'>
+        <section className='header-section sticky-top'>
           <div className='d-flex flex-row align-items-center'>
             <img className='room-img' src='https://t4.ftcdn.net/jpg/02/01/10/87/360_F_201108775_UMAoFXBAsSKNcr53Ip5CTSy52Ajuk1E4.jpg' />
             <h1>Yappertown</h1>
