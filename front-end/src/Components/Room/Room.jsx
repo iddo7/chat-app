@@ -48,7 +48,7 @@ export default function Room() {
       else {
         let newMessageGroup = {
           id: crypto.randomUUID(),
-          author: message.author,
+          authorId: message.authorId,
           messages: [message]
         }
         newMessageGroups.push(newMessageGroup)

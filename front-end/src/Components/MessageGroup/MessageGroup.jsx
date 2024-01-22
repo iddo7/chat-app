@@ -1,7 +1,9 @@
 import Message from "../Message/Message"
 
-export default function MessageGroup({ id, author, messages }) {
-    let isOwn = author == 'own'
+export default function MessageGroup({ authorId, messages }) {
+    let isOwn = authorId == 'own'
+
+    console.log(isOwn)
 
     return (
         <>
@@ -9,7 +11,7 @@ export default function MessageGroup({ id, author, messages }) {
 
                 {
                     !isOwn && 
-                    <span className='message-author'>{author}</span>
+                    <span className='message-author'>{authorId}</span>
                 }
 
                 {
