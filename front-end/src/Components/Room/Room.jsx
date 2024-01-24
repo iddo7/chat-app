@@ -25,7 +25,7 @@ export default function Room() {
     }
   }, [messages])
 
-  const fetchRoom = async () => {
+  const fetchRoom = () => {
     fetch(`http://localhost:8081/room/${params.id}`)
     .then(response => response.json())
     .then(data => {
@@ -97,7 +97,7 @@ export default function Room() {
 
         <section className='header-section sticky-top'>
           <div className='d-flex flex-row align-items-center'>
-            <img className='room-img' src='https://t4.ftcdn.net/jpg/02/01/10/87/360_F_201108775_UMAoFXBAsSKNcr53Ip5CTSy52Ajuk1E4.jpg' />
+            <img className='room-img' src={room.imageUrl} />
             <h1>{room.name}</h1>
             <div className="form-check form-switch ms-auto">
               <input type='checkbox' className='form-check-input' />
