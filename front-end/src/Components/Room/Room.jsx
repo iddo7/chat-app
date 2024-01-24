@@ -42,7 +42,7 @@ export default function Room() {
 
     messages.forEach(message => {
 
-      if (lastMessage != null && message.author === lastMessage.author) {
+      if (lastMessage != null && message.authorId === lastMessage.authorId) {
         newMessageGroups[newMessageGroups.length -1].messages.push(message)
       }
       else {
@@ -60,6 +60,7 @@ export default function Room() {
     return newMessageGroups
   }
   
+  console.log(getMessageGroups())
 
   function createMessage(message) {
     fetch(`http://localhost:8081/room/${params.id}/messages/create`, {
