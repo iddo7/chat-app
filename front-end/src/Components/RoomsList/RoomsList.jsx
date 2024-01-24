@@ -2,40 +2,26 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle as fullCircle } from '@fortawesome/free-solid-svg-icons'
 import { faCircle as emptyCircle } from '@fortawesome/free-regular-svg-icons'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function RoomsList() {
-    const [rooms, setRooms] = useState([
-        {
-            id: 1,
-            name: 'Yappertown',
-            imageUrl: 'https://t4.ftcdn.net/jpg/02/01/10/87/360_F_201108775_UMAoFXBAsSKNcr53Ip5CTSy52Ajuk1E4.jpg', // Add the URL for the room image here
-            usersId: [
-                'JeTibault',
-                'JuFortin',
-                'own',
-            ]
-        },
-        {
-            id: 2,
-            name: 'jeans koule',
-            imageUrl: 'https://t4.ftcdn.net/jpg/02/01/10/87/360_F_201108775_UMAoFXBAsSKNcr53Ip5CTSy52Ajuk1E4.jpg', // Add the URL for the room image here
-            usersId: [
-                'JeTibault',
-                'JuFortin',
-                'own',
-            ]
-        },
-        {
-            id: 3,
-            name: 'Jérémy Thibault',
-            imageUrl: 'https://t4.ftcdn.net/jpg/02/01/10/87/360_F_201108775_UMAoFXBAsSKNcr53Ip5CTSy52Ajuk1E4.jpg', // Add the URL for the room image here
-            usersId: [
-                'JeTibault',
-                'own',
-            ]
-        },
-    ])
+    const [rooms, setRooms] = useState([])
+
+    useEffect(() => {
+        // Fetch the rooms from the server
+        const fetchRooms = () => {
+            fetch('http://localhost:8081/rooms')
+            .then(response => response.json())
+            .then(data => {
+                setRooms(data)
+            })
+            .catch(error => {
+                console.error(error)
+            })
+        }
+
+        fetchRooms()
+    }, [])
 
     return (
         <>
@@ -59,7 +45,7 @@ export default function RoomsList() {
                                 <div className="d-flex flex-column">
                                     <h2>{room.name}</h2>
                                 </div>
-                                <FontAwesomeIcon icon={room.usersId.length > 0 ? fullCircle : emptyCircle} className={`ms-auto ${false ? 'iconCore' : ''}`} />
+                                <FontAwesomeIcon icon={false ? fullCircle : emptyCircle} className={`ms-auto ${false ? 'iconCore' : ''}`} />
                             </Link>
                         ))}
                 

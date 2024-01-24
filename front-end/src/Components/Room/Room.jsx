@@ -6,23 +6,46 @@ import MessageForm from '../MessageForm/MessageForm'
 import MessageGroup from '../MessageGroup/MessageGroup'
 
 export default function Room() {
-  const roomId = useParams()
-
+  const params = useParams()
+  const [room, setRoom] = useState({})
   const [messages, setMessages] = useState([])
   const [messageGroups, setMessageGroups] = useState([])
   const scrollToBottom = useRef(null)
 
   useEffect(() => {
-    setMessageGroups(getMessageGroups())
+    fetchMessages()
+    fetchRoom()
+  }, [])
 
+  useEffect(() => {
+    setMessageGroups(getMessageGroups())
 
     if (scrollToBottom.current) {
       scrollToBottom.current.scrollIntoView({ behaviour: 'smooth' })
-
     }
   }, [messages])
 
+  const fetchRoom = () => {
+    fetch(`http://localhost:8081/room/${params.id}`)
+    .then(response => response.json())
+    .then(data => {
+      setRoom(data[0])
+    })
+    .catch(error => {
+        console.error(error)
+    })
+  }
 
+  const fetchMessages = () => {
+    fetch(`http://localhost:8081/room/${params.id}/messages`)
+    .then(response => response.json())
+    .then(data => {
+      setMessages(data)
+    })
+    .catch(error => {
+        console.error(error)
+    })
+  }
 
   function getMessageGroups() {
     let newMessageGroups = []
@@ -32,13 +55,13 @@ export default function Room() {
 
     messages.forEach(message => {
 
-      if (lastMessage != null && message.author === lastMessage.author) {
+      if (lastMessage != null && message.authorId === lastMessage.authorId) {
         newMessageGroups[newMessageGroups.length -1].messages.push(message)
       }
       else {
         let newMessageGroup = {
           id: crypto.randomUUID(),
-          author: message.author,
+          authorId: message.authorId,
           messages: [message]
         }
         newMessageGroups.push(newMessageGroup)
@@ -49,23 +72,33 @@ export default function Room() {
     
     return newMessageGroups
   }
-  
 
   function createMessage(message) {
-    setMessages(currentMessages => {
-      return [...currentMessages, message]
+    fetch(`http://localhost:8081/room/${params.id}/messages/create`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(message)
     })
-
+    .then(response => response.json())
+    .then(data => {
+      fetchMessages()
+    })
+    .catch(error => {
+      console.error(error)
+    })
+    
   }
 
   return (
     <>
       <div className='container text-white'>
 
-        <section className='header-section'>
+        <section className='header-section sticky-top'>
           <div className='d-flex flex-row align-items-center'>
-            <img className='room-img' src='https://t4.ftcdn.net/jpg/02/01/10/87/360_F_201108775_UMAoFXBAsSKNcr53Ip5CTSy52Ajuk1E4.jpg' />
-            <h1>Yappertown</h1>
+            <img className='room-img' src={room.imageUrl} />
+            <h1>{room.name}</h1>
             <div className="form-check form-switch ms-auto">
               <input type='checkbox' className='form-check-input' />
             </div>
@@ -87,7 +120,7 @@ export default function Room() {
         </section>
 
         <section className='message-form-section fixed-bottom'>
-          <MessageForm onSubmit={createMessage} roomId={roomId} />
+          <MessageForm onSubmit={createMessage} roomId={params.id} />
         </section>
 
       </div>
