@@ -1,19 +1,41 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './SignUpForm.scss'
 
 export default function SignUpForm() {
     const [email, setEmail] = useState('')
+    const [emailConfirm, setEmailConfirm] = useState('')
     const [password, setPassword] = useState('')
+    const [passwordConfirm, setPasswordConfirm] = useState('')
+    const [signUpConfirmed, setSignUpConfirmed] = useState(false)
+
+    useEffect(() => {
+        setSignUpConfirmed(emailConfirmed() && passwordConfirmed())
+    }, [email, emailConfirm, password, passwordConfirm])
 
     function handleSubmit(e) {
         e.preventDefault()
+
+        console.log(signUpConfirmed + ' sign up')
 
         const user = {
             email: email,
             password: password
         }
-        console.log(user)
     }
+
+    function emailConfirmed() { 
+        return (
+            email != '' &&
+            email === emailConfirm
+        )
+    }
+    function passwordConfirmed() {
+        return (
+            password != '' &&
+            password === passwordConfirm 
+        )
+    }
+    
 
     return (
         <>
@@ -36,6 +58,10 @@ export default function SignUpForm() {
                     <div className='form-row'>
                         <label htmlFor='emailConfirm' className='form-label'>Confirm email address</label>
                         <input 
+                            value={emailConfirm}
+                            onChange={e => {
+                                setEmailConfirm(e.target.value)
+                            }}
                             type='email' 
                             autoComplete='confirm-email'
                             className='form-control' 
@@ -59,6 +85,10 @@ export default function SignUpForm() {
                     <div className='form-row'>
                         <label htmlFor='passwordConfirm' className='form-label'>Confirm password</label>
                         <input 
+                            value={passwordConfirm}
+                            onChange={e => {
+                                setPasswordConfirm(e.target.value)
+                            }}
                             type='password' 
                             autoComplete='confirm-password'
                             className='form-control' 
