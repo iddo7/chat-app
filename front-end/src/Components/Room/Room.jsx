@@ -7,12 +7,14 @@ import MessageGroup from '../MessageGroup/MessageGroup'
 
 export default function Room() {
   const params = useParams()
+  const [room, setRoom] = useState({})
   const [messages, setMessages] = useState([])
   const [messageGroups, setMessageGroups] = useState([])
   const scrollToBottom = useRef(null)
 
   useEffect(() => {
     fetchMessages()
+    fetchRoom()
   }, [])
 
   useEffect(() => {
@@ -22,6 +24,17 @@ export default function Room() {
       scrollToBottom.current.scrollIntoView({ behaviour: 'smooth' })
     }
   }, [messages])
+
+  const fetchRoom = async () => {
+    fetch(`http://localhost:8081/room/${params.id}`)
+    .then(response => response.json())
+    .then(data => {
+      setRoom(data[0])
+    })
+    .catch(error => {
+        console.error(error)
+    })
+  }
 
   const fetchMessages = () => {
     fetch(`http://localhost:8081/room/${params.id}/messages`)
@@ -59,8 +72,6 @@ export default function Room() {
     
     return newMessageGroups
   }
-  
-  console.log(getMessageGroups())
 
   function createMessage(message) {
     fetch(`http://localhost:8081/room/${params.id}/messages/create`, {
@@ -87,7 +98,7 @@ export default function Room() {
         <section className='header-section sticky-top'>
           <div className='d-flex flex-row align-items-center'>
             <img className='room-img' src='https://t4.ftcdn.net/jpg/02/01/10/87/360_F_201108775_UMAoFXBAsSKNcr53Ip5CTSy52Ajuk1E4.jpg' />
-            <h1>Yappertown</h1>
+            <h1>{room.name}</h1>
             <div className="form-check form-switch ms-auto">
               <input type='checkbox' className='form-check-input' />
             </div>
