@@ -27,6 +27,7 @@ export default function SignUpForm() {
 
     function handleSubmit(e) {
         e.preventDefault()
+        
         if (!signUpConfirmed) return
 
         const user = {
