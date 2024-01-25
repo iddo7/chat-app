@@ -87,15 +87,26 @@ app.post('/room/:roomId/messages/create', (req, res) => {
 
 /* Users */
 
-app.get('/users/create-min', (req, res) => {
+app.post('/users/create-min', (req, res) => {
     const { id, email, password } = req.body;
     const query = 'INSERT INTO users (id, email, password) VALUES (?, ?, ?)';
 
     db.query(query, [id, email, password], (err, result) => {
-        if (err) return res.json(err);
-        return res.send(result);
+        if (err) {
+            console.error('Database error:', err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        // Check the result to determine if the query was successful
+        if (result.affectedRows === 1) {
+            return res.status(200).send('User created successfully');
+        } else {
+            console.error('Unexpected result from the database:', result);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
     });
 });
+
 
 
 
