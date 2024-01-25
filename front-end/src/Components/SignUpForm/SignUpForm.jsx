@@ -1,24 +1,29 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { sha256 } from 'js-sha256'
 import './SignUpForm.scss'
 
-export default function SignUpForm() {
-    const [email, setEmail] = useState('')
-    const [emailConfirm, setEmailConfirm] = useState('')
-
-    const [password, setPassword] = useState('')
+export default function SignUpForm() {    
+    const [formData, setFormData] = useState({
+        email: '',
+        emailConfirm: '',
+        password: '',
+        passwordConfirm: ''
+    })
     const [isTypingPassword, setIsTypingPassword] = useState(false)
-    const [passwordConfirm, setPasswordConfirm] = useState('')
     const [isTypingPasswordConfirm, setIsTypingPasswordConfirm] = useState(false)
 
-    const [signUpConfirmed, setSignUpConfirmed] = useState(false)
 
+    const [signUpConfirmed, setSignUpConfirmed] = useState(false)
     const [responseStatus, setResponseStatus] = useState(-1)
 
+    const { email, emailConfirm, password, passwordConfirm } = formData
+
+    const emailConfirmed = useCallback(() => email !== '' && email === emailConfirm, [email, emailConfirm])
+    const passwordConfirmed = useCallback(() => password !== '' && password === passwordConfirm, [password, passwordConfirm])
 
     useEffect(() => {
         setSignUpConfirmed(emailConfirmed() && passwordConfirmed())
-    }, [email, emailConfirm, password, passwordConfirm])
+    }, [email, emailConfirm, password, passwordConfirm, emailConfirmed, passwordConfirmed])
 
     function handleSubmit(e) {
         e.preventDefault()
@@ -30,21 +35,10 @@ export default function SignUpForm() {
             password: sha256(password.trim())
         }
         createUser(user)
-
     }
 
-    function emailConfirmed() { 
-        return (
-            email != '' &&
-            email === emailConfirm
-        )
-    }
-    function passwordConfirmed() {
-        return (
-            password != '' &&
-            password.length >= 8 &&
-            password === passwordConfirm 
-        )
+    function handleInputChange(e) {
+        setFormData(prevState => ({ ...prevState, [e.target.name]: e.target.value }))
     }
 
     function createUser(user) {
@@ -80,10 +74,9 @@ export default function SignUpForm() {
                         <div className='form-row'>
                             <label htmlFor='email' className='form-label'>Email address</label>
                             <input 
+                                name='email'
                                 value={email}
-                                onChange={e => {
-                                    setEmail(e.target.value)
-                                }}
+                                onChange={handleInputChange}
                                 type='email' 
                                 autoComplete='email'
                                 className='form-control' 
@@ -93,10 +86,9 @@ export default function SignUpForm() {
                         <div className='form-row'>
                             <label htmlFor='emailConfirm' className='form-label'>Confirm email address</label>
                             <input 
+                                name='emailConfirm'
                                 value={emailConfirm}
-                                onChange={e => {
-                                    setEmailConfirm(e.target.value)
-                                }}
+                                onChange={handleInputChange}
                                 type='email' 
                                 autoComplete='confirm-email'
                                 className='form-control' 
@@ -107,10 +99,9 @@ export default function SignUpForm() {
                         <div className='form-row'>
                             <label htmlFor='password' className='form-label'>Password</label>
                             <input 
+                                name='password'
                                 value={password}
-                                onChange={e => {
-                                    setPassword(e.target.value)
-                                }}
+                                onChange={handleInputChange}
                                 onFocus={e => {
                                     setIsTypingPassword(true)
                                 }}
@@ -132,10 +123,9 @@ export default function SignUpForm() {
                         <div className='form-row'>
                             <label htmlFor='passwordConfirm' className='form-label'>Confirm password</label>
                             <input 
+                                name='passwordConfirm'
                                 value={passwordConfirm}
-                                onChange={e => {
-                                    setPasswordConfirm(e.target.value)
-                                }}
+                                onChange={handleInputChange}
                                 onFocus={e => {
                                     setIsTypingPasswordConfirm(true)
                                 }}
