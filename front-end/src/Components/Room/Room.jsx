@@ -93,37 +93,33 @@ export default function Room() {
 
   return (
     <>
-      <div className='container text-white'>
-
-        <section className='header-section sticky-top'>
-          <div className='d-flex flex-row align-items-center'>
-            <img className='room-img' src={room.imageUrl} />
-            <h1>{room.name}</h1>
-            <div className="form-check form-switch ms-auto">
-              <input type='checkbox' className='form-check-input' />
-            </div>
+      <section className='header-section sticky-top'>
+        <div className='d-flex flex-row align-items-center'>
+          <img className='room-img' src={room.imageUrl} />
+          <h1>{room.name}</h1>
+          <div className="form-check form-switch ms-auto">
+            <input type='checkbox' className='form-check-input' />
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className='messages-section d-flex flex-column'>
+      <section className='messages-section d-flex flex-column'>
 
-          {
-            messageGroups.map(messageGroup => {
-              return (
-                <MessageGroup {...messageGroup} key={messageGroup.id} />
-              )
-            })
-          }
+        {
+          messageGroups.map(messageGroup => {
+            return (
+              <MessageGroup {...messageGroup} key={messageGroup.id} />
+            )
+          })
+        }
 
-          <div className='scroll-to-bottom' ref={scrollToBottom}></div>
+        <div className='scroll-to-bottom' ref={scrollToBottom}></div>
 
-        </section>
+      </section>
 
-        <section className='message-form-section fixed-bottom'>
-          <MessageForm onSubmit={createMessage} roomId={params.id} />
-        </section>
-
-      </div>
+      <section className='message-form-section fixed-bottom'>
+        <MessageForm onSubmit={createMessage} roomId={params.id} />
+      </section>
     </>
   )
 }

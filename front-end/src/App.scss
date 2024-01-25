@@ -37,10 +37,29 @@ a {
     color: $app-fonts-color;
 }
 
+form {
+
+    .form-row {
+        margin-bottom: $form-row-spacing;
+
+        label {
+            margin: 0;
+            margin-bottom: $form-label-spacing;
+        }
+    }
+
+    button {
+        margin-top: $form-row-spacing;
+    }
+}
+
 .icon-core {
     color: rgb(89, 111, 233);
 }
 
+.bg-dark {
+    background-color: rgba(255, 255, 255, 0.09) !important;
+}
 
 
 .room-img {

@@ -25,34 +25,30 @@ export default function RoomsList() {
 
     return (
         <>
-            <div className='container text-white'>
-          
-                <section className='rooms-list-section'>
-                    <div className="d-flex flex-column">
+            <section className='rooms-list-section'>
+                <div className="d-flex flex-column">
 
-                        {rooms.map(room => (
-                            <Link 
-                                key={room.id}
-                                to={{
-                                    pathname: `/room/${room.id}`,
-                                    state: {
-                                        room: room
-                                    }
-                                }}
-                                className="room-preview d-flex flex-row align-items-center" 
-                            >            
-                                <img className='room-img' src={room.imageUrl} />
-                                <div className="d-flex flex-column">
-                                    <h2>{room.name}</h2>
-                                </div>
-                                <FontAwesomeIcon icon={false ? fullCircle : emptyCircle} className={`ms-auto ${false ? 'iconCore' : ''}`} />
-                            </Link>
-                        ))}
-                
-                    </div>
-                </section>
+                    {rooms.map(room => (
+                        <Link 
+                            key={room.id}
+                            to={{
+                                pathname: `/room/${room.id}`,
+                                state: {
+                                    room: room
+                                }
+                            }}
+                            className="room-preview d-flex flex-row align-items-center" 
+                        >            
+                            <img className='room-img' src={room.imageUrl} />
+                            <div className="d-flex flex-column">
+                                <h2>{room.name}</h2>
+                            </div>
+                            <FontAwesomeIcon icon={false ? fullCircle : emptyCircle} className={`ms-auto ${false ? 'iconCore' : ''}`} />
+                        </Link>
+                    ))}
             
-            </div>
+                </div>
+            </section>
         </>
     )
 }
