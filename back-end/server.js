@@ -85,6 +85,19 @@ app.post('/room/:roomId/messages/create', (req, res) => {
 });
 
 
+/* Users */
+
+app.get('/users/create', (req, res) => {
+    const { id, authorId, content, isCore } = req.body;
+    const query = 'INSERT INTO messages (id, roomId, authorId, content, isCore) VALUES (?, ?, ?, ?, ?)';
+
+    db.query(query, [roomId], (err, result) => {
+        if (err) return res.json(err);
+        return res.send(result);
+    });
+});
+
+
 
 
 

@@ -15,12 +15,15 @@ export default function SignUpForm() {
     function handleSubmit(e) {
         e.preventDefault()
 
-        console.log(signUpConfirmed + ' sign up')
+        if (!signUpConfirmed) return console.log('signup not confirmed')
 
         const user = {
+            id: crypto.randomUUID(),
             email: email,
             password: password
         }
+        console.log(user)
+
     }
 
     function emailConfirmed() { 
@@ -32,6 +35,7 @@ export default function SignUpForm() {
     function passwordConfirmed() {
         return (
             password != '' &&
+            password.length >= 8 &&
             password === passwordConfirm 
         )
     }
