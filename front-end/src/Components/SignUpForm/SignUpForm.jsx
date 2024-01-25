@@ -5,10 +5,16 @@ import './SignUpForm.scss'
 export default function SignUpForm() {
     const [email, setEmail] = useState('')
     const [emailConfirm, setEmailConfirm] = useState('')
+
     const [password, setPassword] = useState('')
+    const [isTypingPassword, setIsTypingPassword] = useState(false)
     const [passwordConfirm, setPasswordConfirm] = useState('')
+    const [isTypingPasswordConfirm, setIsTypingPasswordConfirm] = useState(false)
+
     const [signUpConfirmed, setSignUpConfirmed] = useState(false)
+
     const [responseStatus, setResponseStatus] = useState(-1)
+
 
     useEffect(() => {
         setSignUpConfirmed(emailConfirmed() && passwordConfirmed())
@@ -16,13 +22,12 @@ export default function SignUpForm() {
 
     function handleSubmit(e) {
         e.preventDefault()
-
-        if (!signUpConfirmed) return console.log('signup not confirmed')
+        if (!signUpConfirmed) return
 
         const user = {
             id: crypto.randomUUID(),
             email: email,
-            password: sha256(password)
+            password: sha256(password.trim())
         }
         createUser(user)
 
@@ -51,7 +56,13 @@ export default function SignUpForm() {
             body: JSON.stringify(user)
         })
         .then(response => {
-            setResponseStatus(response.status)
+            let status = ''
+            if (response.status >= 200 && response.status < 300) {
+                status = 'success'
+            } else if (response.status >= 500 && response.status < 600) {
+                status = 'error'
+            }
+            setResponseStatus(status)
         })
         .catch(error => {
             console.error(error)
@@ -100,11 +111,23 @@ export default function SignUpForm() {
                                 onChange={e => {
                                     setPassword(e.target.value)
                                 }}
+                                onFocus={e => {
+                                    setIsTypingPassword(true)
+                                }}
+                                onBlur={e => {
+                                    setIsTypingPassword(false)
+                                }}
                                 type='password' 
                                 autoComplete='password'
                                 className='form-control' 
                                 id='password'
                             />
+                            {/* Display Alert */}
+                            {!isTypingPassword && password.length < 8 && password.length > 0 && (
+                                <div className='alert alert-danger mt-3' role='alert'>
+                                    Password must be at least 8 characters long.
+                                </div>
+                            )}
                         </div>
                         <div className='form-row'>
                             <label htmlFor='passwordConfirm' className='form-label'>Confirm password</label>
@@ -113,24 +136,38 @@ export default function SignUpForm() {
                                 onChange={e => {
                                     setPasswordConfirm(e.target.value)
                                 }}
+                                onFocus={e => {
+                                    setIsTypingPasswordConfirm(true)
+                                }}
+                                onBlur={e => {
+                                    setIsTypingPasswordConfirm(false)
+                                }}
                                 type='password' 
                                 autoComplete='confirm-password'
                                 className='form-control' 
                                 id='passwordConfirm' 
                             />
+                            {/* Display Alert */}
+                            {!isTypingPasswordConfirm && passwordConfirm.length < 8 && passwordConfirm.length > 0 && (
+                                <div className='alert alert-danger mt-3' role='alert'>
+                                    Both passwords must match.
+                                </div>
+                            )}
                         </div>
+
+
 
                         <button type='submit' className='btn btn-primary'>Submit</button>
                     </form>
                 )}
 
                 {/* Display feedback based on signupStatus */}
-                {responseStatus >= 200 && responseStatus < 300 && (
+                {responseStatus == 'success' && (
                     <div className='alert alert-success mt-3' role='alert'>
                         User created successfully!
                     </div>
                 )}
-                {responseStatus >= 500 && responseStatus < 600 && (
+                {responseStatus == 'error' && (
                     <div className='alert alert-danger mt-3' role='alert'>
                         Error creating user. Please try again.
                     </div>
