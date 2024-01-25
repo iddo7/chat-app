@@ -14,7 +14,7 @@ export default function SignUpForm() {
 
 
     const [signUpConfirmed, setSignUpConfirmed] = useState(false)
-    const [responseStatus, setResponseStatus] = useState(-1)
+    const [responseStatus, setResponseStatus] = useState('')
 
     const { email, emailConfirm, password, passwordConfirm } = formData
 
@@ -51,13 +51,20 @@ export default function SignUpForm() {
             body: JSON.stringify(user)
         })
         .then(response => {
-            let status = ''
-            if (response.status >= 200 && response.status < 300) {
-                status = 'success'
-            } else if (response.status >= 500 && response.status < 600) {
-                status = 'error'
+            let localStatus = ''
+            let status = response.status
+
+            if (status >= 200 && status < 300) {
+                localStatus = 'success'
+            } 
+            else if (status >= 500 && status < 600) {
+                localStatus = 'error'
             }
-            setResponseStatus(status)
+
+            if (status == 501) localStatus = 'email-exists'
+
+            console.log(localStatus)
+            setResponseStatus(localStatus)
         })
         .catch(error => {
             console.error(error)
@@ -70,7 +77,7 @@ export default function SignUpForm() {
                 <h1 className='mb-3'>Sign Up</h1>
 
                 {/* Display form for Sign Up */}
-                {responseStatus == -1 && (
+                {responseStatus == '' && (
                     <form onSubmit={handleSubmit}>
                         <div className='form-row'>
                             <label htmlFor='email' className='form-label'>Email address</label>
@@ -161,6 +168,11 @@ export default function SignUpForm() {
                 {responseStatus == 'error' && (
                     <div className='alert alert-danger mt-3' role='alert'>
                         Error creating user. Please try again.
+                    </div>
+                )}
+                {responseStatus == 'email-exists' && (
+                    <div className='alert alert-danger mt-3' role='alert'>
+                        An account with this email already exists.
                     </div>
                 )}
 

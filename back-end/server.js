@@ -94,6 +94,8 @@ app.post('/users/create-min', (req, res) => {
     db.query(query, [id, email, password], (err, result) => {
         if (err) {
             console.error('Database error:', err);
+
+            if (err.code == 'ER_DUP_ENTRY') return res.status(501).json({ error: 'Duplicate user email entry' })
             return res.status(500).json({ error: 'Internal Server Error' });
         }
 
